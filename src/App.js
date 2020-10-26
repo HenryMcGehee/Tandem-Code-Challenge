@@ -1,25 +1,36 @@
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import QuestionContainer from './Containers/QuestionContainer';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  state = {
+    answers: [],
+  }
+
+  onAnswer = (bool) => {
+    const answerState = this.state.answers;
+    let answer;
+    if (bool === 'true') {
+      answer = true;
+    } else {
+      answer = false;
+    }
+    answerState.push(answer);
+    this.setState({answers: answerState})
+  }
+
+  render() {
+
+    return (
+      <div className="App">
+        <h1>Trivia</h1>
+  
+        <QuestionContainer onAnswer={this.onAnswer} answers={this.state.answers}/>
+
+        <h1>The End</h1>
+      </div>
+    );
+  }
 }
 
 export default App;
