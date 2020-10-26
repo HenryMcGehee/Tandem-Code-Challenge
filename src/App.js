@@ -1,36 +1,47 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import './App.css';
-import QuestionContainer from './Containers/QuestionContainer';
+import QuestionData from './Data/Apprentice_TandemFor400_Data.json';
 
-class App extends Component {
-  state = {
-    answers: [],
-  }
+export default function App() {
 
-  onAnswer = (bool) => {
-    const answerState = this.state.answers;
-    let answer;
-    if (bool === 'true') {
-      answer = true;
-    } else {
-      answer = false;
+  let [currentQuestion, setCurrentQuestion] = useState(0);
+
+  const Choice = () => {
+    let nextQuestion = currentQuestion ++;
+    if(nextQuestion < QuestionData.length){
+      setCurrentQuestion(nextQuestion);
     }
-    answerState.push(answer);
-    this.setState({answers: answerState})
+    else{
+      alert("End");
+    }
   }
 
-  render() {
-
-    return (
-      <div className="App">
-        <h1>Trivia</h1>
-  
-        <QuestionContainer onAnswer={this.onAnswer} answers={this.state.answers}/>
-
-        <h1>The End</h1>
+  return (
+    <div className="App">
+      <h1>Trivia</h1>
+ 
+      <div className='question-section'>
+          <div className='question-count'>
+            <span>Question {currentQuestion + 1}</span>/{QuestionData.length}
+          </div>
+          <div className='question-text'>
+            {QuestionData[currentQuestion].question}
+          </div>
       </div>
-    );
-  }
-}
 
-export default App;
+      <div className='answer-section'>
+          
+        {QuestionData[currentQuestion].incorrect.map((option) => (
+          <button onClick={Choice}>
+              {option}
+          </button>
+        ))}
+
+        <button onClick={Choice}>
+          {QuestionData[currentQuestion].correct}
+        </button>
+
+      </div>
+    </div>
+  );
+}
