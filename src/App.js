@@ -7,13 +7,16 @@ export default function App() {
 
   let [currentQuestion, setCurrentQuestion] = useState(0);
 
+  let [questionContent, setQuestionContent] = useState(Math.floor(Math.random() * 21));
+
   const [showScore, showEndScore] = useState(false);
 
   const Answer = () => {
 
     let nextQuestion = currentQuestion + 1;
-    if(nextQuestion < QuestionData.length){
+    if(nextQuestion < 10){
       setCurrentQuestion(nextQuestion);
+      setQuestionContent(Math.floor(Math.random() * 21))
     }
     else{
       showEndScore(true);
@@ -29,40 +32,44 @@ export default function App() {
 
   return (
     <div className="App">
-      <h1>Trivia</h1>
+      <div className="header">
+        <h1>Trivia</h1>
+      </div>
 
-      {showScore ? (
-        <div>You scored {score} out of {QuestionData.length}</div>
-      ) : (
-        <>
-          <div className='question-section'>
-              <div className='question-count'>
-                <span>Question {currentQuestion + 1}</span>/{QuestionData.length}
-              </div>
-              <div className='question-text'>
-                {QuestionData[currentQuestion].question}
-              </div>
-          </div>
+      <div className="questionContainer">
+        {showScore ? (
+          <div>You scored {score} out of 10</div>
+        ) : (
+          <>
+            <div className="question-section">
+                <div className="current-question">
+                  <span>Question {currentQuestion + 1}</span>/10
+                </div>
+                <div className="question-text">
+                  {QuestionData[questionContent].question}
+                </div>
+            </div>
 
-          <div className='answer-section'>
-              
-            {QuestionData[currentQuestion].incorrect.map((option) => (
-              <button onClick={Answer}>
-                  {option}
+            <div className="answer-section">
+                
+              {QuestionData[questionContent].incorrect.map((option) => (
+                <button onClick={Answer}>
+                    {option}
+                </button>
+              ))}
+
+              <button onClick={() => {
+                Correct();
+                Answer();
+              }}>
+                {QuestionData[questionContent].correct}
               </button>
-            ))}
 
-            <button onClick={() => {
-              Correct();
-              Answer();
-            }}>
-              {QuestionData[currentQuestion].correct}
-            </button>
+            </div>
 
-          </div>
-
-        </>
-      )}
+          </>
+        )}
+      </div>
     </div>
   );
 }
