@@ -52,7 +52,10 @@ export default function App() {
               </button>
             ))}
 
-            <button onClick={Answer, Correct}>
+            <button onClick={() => {
+              Correct();
+              Answer();
+            }}>
               {QuestionData[currentQuestion].correct}
             </button>
 
