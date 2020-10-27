@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
-import './App.css';
+import Modal from './Components/Modal';
 import QuestionData from './Data/Apprentice_TandemFor400_Data.json';
 
+import './App.css';
+
 export default function App() {
+  const [showModal, setModal] = useState(false);
+
   let [score, setScore] = useState(0);
 
   let [currentQuestion, setCurrentQuestion] = useState(0);
@@ -15,19 +19,29 @@ export default function App() {
 
     let nextQuestion = currentQuestion + 1;
     if(nextQuestion < 10){
-      setCurrentQuestion(nextQuestion);
-      setQuestionContent(Math.floor(Math.random() * 21))
+      setModal(true);
     }
     else{
       showEndScore(true);
     }
   }
-
+  
   const Correct = () => {
     console.log("correct");
-
+    
     let newScore = score + 1;
     setScore(newScore);
+  }
+  
+  const CloseModal = () => {
+    let nextQuestion = currentQuestion + 1;
+
+    if(nextQuestion < 10){
+      setCurrentQuestion(nextQuestion);
+      setQuestionContent(Math.floor(Math.random() * 21))
+    }
+    
+    setModal(false);
   }
 
   return (
@@ -35,6 +49,8 @@ export default function App() {
       <div className="header">
         <h1>Trivia</h1>
       </div>
+
+      <Modal show={showModal} close={CloseModal} correct={QuestionData[questionContent].correct}/>
 
       <div className="questionContainer">
         {showScore ? (
@@ -53,12 +69,12 @@ export default function App() {
             <div className="answer-section">
                 
               {QuestionData[questionContent].incorrect.map((option) => (
-                <button onClick={Answer}>
+                <button className="regButton" onClick={Answer}>
                     {option}
                 </button>
               ))}
 
-              <button onClick={() => {
+              <button className="regButton" onClick={() => {
                 Correct();
                 Answer();
               }}>
