@@ -44,7 +44,7 @@ export default function App() {
   }
   
   const CloseModal = () => {
-    console.log(questionData[currentQuestion].question);
+
     const newQuestionData = questionData
     newQuestionData.splice(currentQuestion, 1);
     setQuestionData(newQuestionData);
