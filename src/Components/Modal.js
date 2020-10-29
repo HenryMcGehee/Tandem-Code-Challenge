@@ -8,9 +8,8 @@ export default class Modal extends React.Component {
   render() {
     if(this.props.show){
     return <div className="modal">
-                <div>
-                   {this.props.message}
-                   the correct answer was {this.props.correct}
+                <div className="modalText">
+                   {this.props.message} the correct answer was {this.props.correct}
                 </div>
 
                 <button className="modalButton" onClick={this.props.close}>

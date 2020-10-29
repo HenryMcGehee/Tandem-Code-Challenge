@@ -3,7 +3,7 @@
 }
 
 .header {
-  background-color: yellowgreen;
+  background-color: rgb(41, 41, 41);
   padding: 2em;
 }
 
@@ -14,7 +14,7 @@ h1 {
 
 .questionContainer {
   text-align: center;
-  background-color: yellowgreen;
+  background-color: rgb(41, 41, 41);
   border-radius: 2em;
   width: 70%;
   max-width: 300px;
@@ -25,15 +25,15 @@ h1 {
 }
 
 .question-section {
-  background-color: rgb(107, 107, 107);
+  background-color: white;
   padding-bottom: 2em;
   border-radius: 2em;
-  color: white;
+  color: black;
 }
 
 .current-question {
-  background-color: white;
-  color: black;
+  background-color: rgb(121, 121, 121);
+  color: white;
   border-radius: 2em 2em 0 0;
   line-height: 3em;
 }
@@ -56,10 +56,12 @@ h1 {
   min-width: 100%;
   padding-left: 2em;
   padding-bottom:10px;
+  padding-top: 10px;
   border: 0em;
   border-radius: 1em;
   margin-bottom: 1em;
-  line-height: 2em;
+
+  text-align: center;
 }
 
 .resetButton {

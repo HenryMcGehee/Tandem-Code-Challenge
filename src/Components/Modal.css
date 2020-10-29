@@ -1,15 +1,23 @@
 .modal {
     position: fixed;
     z-index: 1;
-    width: 200px;
-    height: 100px;
+    width: 400px;
+    height: 200px;
     top: 30%;
     left: 50%;
-    margin-left: -100px;
+    margin-left: -200px;
     padding-top: 2em;
+    padding-bottom: 1em;
     background-color: rgb(31, 31, 31);
     color: white;
     border-radius: 1em;
+}
+
+.modalText{
+    padding: 20px;
+    width: 80%;
+    text-align: center;
+    margin: auto;
 }
 
 .modalButton {

@@ -11,13 +11,13 @@ export default function App() {
 
   const [currentQuestionIndex, setcurrentQuestionIndex] = useState(Math.floor(Math.random() * questionData.length));
 
-  let [questionCount, setQuestionCount] = useState(0);
+  const [questionCount, setQuestionCount] = useState(0);
 
   const [showModal, setModal] = useState(false);
 
   const [messageOnAnswer, setMessageOnAnswer] = useState('ooop');
   
-  let [score, setScore] = useState(0);
+  const [score, setScore] = useState(0);
   
   const [showScore, showEndScore] = useState(false);
   
@@ -82,9 +82,7 @@ export default function App() {
   
   const currentQuestion = questionData[currentQuestionIndex];
   const answers = [...currentQuestion.incorrect, currentQuestion.correct];
-  
   const shuffledAnswers = shuffle(answers);
-  
   const answerButtons = shuffledAnswers.map((answer) => {
     return (
     <button className="regButton" onClick={() => checkAnswer(answer)}>{answer}</button>
