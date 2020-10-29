@@ -9,52 +9,39 @@ export default function App() {
   
   const [questionData, setQuestionData] = useState(QuestionDataJSON);
 
-  const [currentQuestion, setCurrentQuestion] = useState(Math.floor(Math.random() * questionData.length));
+  const [currentQuestionIndex, setcurrentQuestionIndex] = useState(Math.floor(Math.random() * questionData.length));
 
   let [questionCount, setQuestionCount] = useState(0);
 
   const [showModal, setModal] = useState(false);
+
+  const [messageOnAnswer, setMessageOnAnswer] = useState('ooop');
   
   let [score, setScore] = useState(0);
-  
-  // let [currentQuestion, setCurrentQuestion] = useState(0);
-  
-  // let [currentQuestion, setQuestionContent] = useState(Math.floor(Math.random() * 21));
   
   const [showScore, showEndScore] = useState(false);
   
   //functions
 
-  const Answer = () => {
-    
+  
+  const CloseModal = () => {
     
     if(questionCount < 9){
-      setModal(true);
+      const newQuestionData = questionData
+      newQuestionData.splice(currentQuestionIndex, 1);
+      setQuestionData(newQuestionData);
+      
+      const newQuestionCount = questionCount + 1;
+      setQuestionCount(newQuestionCount);
+      
+      const newcurrentQuestionIndex = Math.floor(Math.random() * questionData.length);
+      setcurrentQuestionIndex(newcurrentQuestionIndex);
     }
     else{
       showEndScore(true);
     }
-  }
-  
-  const Correct = () => {
-    console.log("correct");
-    
-    let newScore = score + 1;
-    setScore(newScore);
-  }
-  
-  const CloseModal = () => {
-
-    const newQuestionData = questionData
-    newQuestionData.splice(currentQuestion, 1);
-    setQuestionData(newQuestionData);
-    
-    const newQuestionCount = questionCount + 1;
-    setQuestionCount(newQuestionCount);
-    
-    const newCurrentQuestion = Math.floor(Math.random() * questionData.length);
-    setCurrentQuestion(newCurrentQuestion);
     setModal(false);
+    
   }
   
   const Reset = () => {
@@ -65,13 +52,52 @@ export default function App() {
   }
   
   
+  function shuffle(array) {
+    let currentIndex = array.length, temporaryValue, randomIndex;
+    
+    while (0 !== currentIndex) {
+
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+      
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+    
+    return array;
+  }
+  
+  const checkAnswer = (answer) => {
+    if(answer===currentQuestion.correct){
+      let newScore = score + 1;
+      setScore(newScore);
+      setMessageOnAnswer('Correct!')
+    }
+    else{
+      setMessageOnAnswer('Incorrect you idiot')
+    }
+    setModal(true);
+  }
+  
+  const currentQuestion = questionData[currentQuestionIndex];
+  const answers = [...currentQuestion.incorrect, currentQuestion.correct];
+  
+  const shuffledAnswers = shuffle(answers);
+  
+  const answerButtons = shuffledAnswers.map((answer) => {
+    return (
+    <button className="regButton" onClick={() => checkAnswer(answer)}>{answer}</button>
+    )
+  })
+
   return (
     <div className="App">
       <div className="header">
         <h1>Trivia</h1>
       </div>
 
-      <Modal show={showModal} close={CloseModal} correct={questionData[currentQuestion].correct}/>
+      <Modal show={showModal} close={CloseModal} message={messageOnAnswer} correct={currentQuestion.correct}/>
 
       <div className="questionContainer">
         {showScore ? (
@@ -88,24 +114,13 @@ export default function App() {
                   <span>Question {questionCount + 1}</span>/10
                 </div>
                 <div className="question-text">
-                  {questionData[currentQuestion].question}
+                  {currentQuestion.question}
                 </div>
             </div>
 
             <div className="answer-section">
-                
-              {questionData[currentQuestion].incorrect.map((option) => (
-                <button className="regButton" onClick={Answer}>
-                    {option}
-                </button>
-              ))}
 
-              <button className="regButton" onClick={() => {
-                Correct();
-                Answer();
-              }}>
-                {questionData[currentQuestion].correct}
-              </button>
+              {answerButtons}
 
             </div>
 
