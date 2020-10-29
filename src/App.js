@@ -1,38 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import Modal from './Components/Modal';
-import QuestionData from './Data/Apprentice_TandemFor400_Data.json';
+import QuestionDataJSON from './Data/Apprentice_TandemFor400_Data.json';
 
 import './App.css';
 
 export default function App() {
-  const QuestionArry = [];
-  
-  for(let i = 0; i < QuestionData.length; i++){
-    QuestionArry.push(QuestionData[i]);
-  }
   // state info
   
+  const [questionData, setQuestionData] = useState(QuestionDataJSON);
+
+  const [currentQuestion, setCurrentQuestion] = useState(Math.floor(Math.random() * questionData.length));
+
+  let [questionCount, setQuestionCount] = useState(0);
+
   const [showModal, setModal] = useState(false);
   
   let [score, setScore] = useState(0);
   
-  let [currentQuestion, setCurrentQuestion] = useState(0);
+  // let [currentQuestion, setCurrentQuestion] = useState(0);
   
-  let [questionContent, setQuestionContent] = useState(Math.floor(Math.random() * 21));
+  // let [currentQuestion, setQuestionContent] = useState(Math.floor(Math.random() * 21));
   
   const [showScore, showEndScore] = useState(false);
   
   //functions
-  
-  const LoadData = () => {
-  }
 
   const Answer = () => {
-    QuestionArry.splice(QuestionArry[questionContent - 1], 1);
-    console.log(QuestionArry[questionContent - 1]);
     
-    let nextQuestion = currentQuestion + 1;
-    if(nextQuestion < 10){
+    
+    if(questionCount < 9){
       setModal(true);
     }
     else{
@@ -48,32 +44,34 @@ export default function App() {
   }
   
   const CloseModal = () => {
-    let nextQuestion = currentQuestion + 1;
+    console.log(questionData[currentQuestion].question);
+    const newQuestionData = questionData
+    newQuestionData.splice(currentQuestion, 1);
+    setQuestionData(newQuestionData);
     
-    if(nextQuestion < 10){
-      setCurrentQuestion(nextQuestion);
-      setQuestionContent(Math.floor(Math.random() * 21))
-    }
+    const newQuestionCount = questionCount + 1;
+    setQuestionCount(newQuestionCount);
     
+    const newCurrentQuestion = Math.floor(Math.random() * questionData.length);
+    setCurrentQuestion(newCurrentQuestion);
     setModal(false);
   }
-
+  
   const Reset = () => {
     showEndScore(false)
-    setCurrentQuestion(0)
+    setQuestionCount(0)
     setScore(0)
+    setQuestionData(QuestionDataJSON)
   }
-
-
+  
+  
   return (
     <div className="App">
       <div className="header">
         <h1>Trivia</h1>
       </div>
 
-      
-
-      <Modal show={showModal} close={CloseModal} correct={QuestionArry[questionContent].correct}/>
+      <Modal show={showModal} close={CloseModal} correct={questionData[currentQuestion].correct}/>
 
       <div className="questionContainer">
         {showScore ? (
@@ -87,16 +85,16 @@ export default function App() {
           <>
             <div className="question-section">
                 <div className="current-question">
-                  <span>Question {currentQuestion + 1}</span>/10
+                  <span>Question {questionCount + 1}</span>/10
                 </div>
                 <div className="question-text">
-                  {QuestionArry[questionContent].question}
+                  {questionData[currentQuestion].question}
                 </div>
             </div>
 
             <div className="answer-section">
                 
-              {QuestionArry[questionContent].incorrect.map((option) => (
+              {questionData[currentQuestion].incorrect.map((option) => (
                 <button className="regButton" onClick={Answer}>
                     {option}
                 </button>
@@ -106,7 +104,7 @@ export default function App() {
                 Correct();
                 Answer();
               }}>
-                {QuestionArry[questionContent].correct}
+                {questionData[currentQuestion].correct}
               </button>
 
             </div>
